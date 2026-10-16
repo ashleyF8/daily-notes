@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 """
-Runs the momentum scan and sends an iPhone push notification (via the free
-ntfy app) for every NEW stock that matches your rules today.
+Runs the momentum scan and sends iPhone push notifications (ntfy app) with a
+full trade plan: entry, stop-loss, targets and position size.
 
-Designed to run on GitHub Actions every 10 minutes during US market hours.
-Each stock is only alerted once per trading day (remembered in alerted.json).
+* Pre-market (9am-2:30pm UK): alerts on stocks gapping up with news.
+* Market hours: alerts on new momentum stocks, and again (max 3 a day) if a
+  stock already alerted pushes to a new high.
+
+Runs on GitHub Actions. Remembers what it has sent today in alerted.json.
 
 Environment variables:
-    NTFY_TOPIC   your private ntfy topic name (set as a GitHub secret)
+    NTFY_TOPIC   your private ntfy topic name (GitHub secret)
     FORCE_RUN    "1" = run even when the market is closed and always send a
-                 status message (used for the manual "Run workflow" test)
+                 status message (used by the manual "Run workflow" button)
 """
 
 import datetime as dt
@@ -18,13 +21,13 @@ import os
 import sys
 import urllib.request
 from pathlib import Path
-from zoneinfo import ZoneInfo
 
 import momentum_scanner as scanner
 
 STATE_FILE = Path(__file__).resolve().parent / "alerted.json"
 NTFY_SERVER = os.environ.get("NTFY_SERVER", "https://ntfy.sh")
-UK = ZoneInfo("Europe/London")
+MAX_ALERTS_PER_STOCK = 3
+REALERT_NEW_HIGH_PCT = 5.0   # re-alert if the high of day is this % above the last alert
 
 
 def send_push(topic, title, message, click=None, priority=4, tags=None):
@@ -42,24 +45,58 @@ def send_push(topic, title, message, click=None, priority=4, tags=None):
 def load_state(today):
     try:
         data = json.loads(STATE_FILE.read_text())
-        if data.get("date") == today:
-            return set(data.get("symbols", []))
     except (OSError, ValueError):
-        pass
-    return set()
+        return {}
+    if data.get("date") != today:
+        return {}
+    stocks = data.get("stocks")
+    if stocks is None:   # old v1 format: plain list of symbols
+        stocks = {s: {"count": 1, "hod": 0, "premarket": False} for s in data.get("symbols", [])}
+    return stocks
 
 
-def save_state(today, symbols):
-    STATE_FILE.write_text(json.dumps({"date": today, "symbols": sorted(symbols)}, indent=2) + "\n")
+def save_state(today, stocks):
+    STATE_FILE.write_text(json.dumps({"date": today, "stocks": stocks}, indent=2) + "\n")
 
 
-def describe(h):
-    lines = [f"${h['price']:.2f}  +{h['change']:.1f}%  |  RVOL {h['rvol']:.1f}x  |  "
-             f"Vol {scanner.fmt_big(h['volume'])}  |  Float {scanner.fmt_big(h['float'])}"]
-    for n in h["news"][:2]:
-        when = n["time"].astimezone(UK).strftime("%H:%M UK")
-        lines.append(f"- {n['title']} ({n['source']}, {when})")
+def should_alert(h, record):
+    """Returns (send?, reason)."""
+    if record is None:
+        return True, "new"
+    if h["mode"] == "open" and record.get("premarket") and not record.get("open_alerted"):
+        return True, "open"              # was a pre-market gapper, now trading live
+    if record.get("count", 0) >= MAX_ALERTS_PER_STOCK:
+        return False, ""
+    hod = h["plan"].get("hod") or 0
+    last = record.get("hod") or 0
+    if h["mode"] == "open" and last and hod >= last * (1 + REALERT_NEW_HIGH_PCT / 100):
+        return True, "newhigh"
+    return False, ""
+
+
+def build_message(h):
+    lines = [scanner.summary_line(h)]
+    for d in h["dilution"]:
+        lines.append(f"DILUTION: {d}")
+    lines.extend(scanner.plan_lines(h))
+    for n in h["news"][:1]:
+        when = n["time"].astimezone(scanner.ZoneInfo("Europe/London")).strftime("%H:%M")
+        lines.append(f"News {when}: {n['title']}")
     return "\n".join(lines)
+
+
+def build_title(h, reason):
+    p = h["plan"]
+    prefix = {"new": "", "open": "OPEN: ", "newhigh": "NEW HIGH: "}.get(reason, "")
+    if h["mode"] == "premarket":
+        prefix = "PRE-MKT: " + prefix
+    verdict = ""
+    if not p.get("ok"):
+        verdict = " - SKIP"
+    elif p.get("extended"):
+        verdict = " - WAIT"
+    warn = " [DILUTION]" if h["dilution"] else ""
+    return f"{prefix}{h['symbol']} +{h['change']:.0f}%{verdict}{warn}"
 
 
 def main():
@@ -68,42 +105,56 @@ def main():
         sys.exit("NTFY_TOPIC is not set. Add it as a GitHub secret (see README).")
     force = os.environ.get("FORCE_RUN") == "1"
 
-    is_open, status = scanner.market_status()
-    if not is_open and not force:
+    sess, status = scanner.session()
+    if sess == "closed" and not force:
         print(f"Skipping: {status}")
         return
 
     today = dt.datetime.now(scanner.NY).strftime("%Y-%m-%d")
-    already = load_state(today)
+    stocks = load_state(today)
 
     try:
-        hits = scanner.run_scan(require_news=True)
+        mode, hits = scanner.run_scan(require_news=True)
     except Exception as exc:
         print(f"Scan failed: {exc}")
         if force:
             send_push(topic, "Scanner error", f"The scan failed: {exc}", priority=3, tags=["warning"])
         sys.exit(1)
 
-    print(f"{status} {len(hits)} match(es): {', '.join(h['symbol'] for h in hits) or 'none'}")
+    print(f"[{mode}] {status} {len(hits)} match(es): {', '.join(h['symbol'] for h in hits) or 'none'}")
 
-    new_hits = [h for h in hits if h["symbol"] not in already]
-    for h in new_hits:
-        title = f"{h['symbol']} +{h['change']:.0f}% - {h['name'][:40]}"
-        send_push(topic, title, describe(h),
+    sent = 0
+    for h in hits:
+        record = stocks.get(h["symbol"])
+        ok, reason = should_alert(h, record)
+        if not ok:
+            continue
+        p = h["plan"]
+        priority = 5 if p.get("ok") and not p.get("extended") and not h["dilution"] else 3
+        send_push(topic, build_title(h, reason), build_message(h),
                   click=f"https://finance.yahoo.com/quote/{h['symbol']}",
-                  priority=5 if h["change"] >= 30 else 4,
-                  tags=["chart_with_upwards_trend"])
-        already.add(h["symbol"])
-        print(f"Alert sent: {h['symbol']}")
+                  priority=priority,
+                  tags=["warning"] if h["dilution"] else ["chart_with_upwards_trend"])
+        record = record or {"count": 0, "premarket": False}
+        record["count"] = record.get("count", 0) + 1
+        record["hod"] = p.get("hod") or record.get("hod", 0)
+        if h["mode"] == "premarket":
+            record["premarket"] = True
+        else:
+            record["open_alerted"] = True
+        stocks[h["symbol"]] = record
+        sent += 1
+        print(f"Alert sent: {h['symbol']} ({reason})")
 
-    if force and not new_hits:
+    if force and not sent:
         names = ", ".join(h["symbol"] for h in hits) or "none right now"
-        send_push(topic, "Scanner is working",
-                  f"{status}\nMatches: {names}\n(Already-alerted stocks are not repeated.)",
+        send_push(topic, "Scanner v2 is working",
+                  f"{status}\nMode: {mode}\nMatches: {names}\n"
+                  f"Account GBP {scanner.ACCOUNT_GBP}, risk {scanner.RISK_PCT:g}% per trade.",
                   priority=3, tags=["white_check_mark"])
 
-    if is_open:
-        save_state(today, already)
+    if sess != "closed":
+        save_state(today, stocks)
 
 
 if __name__ == "__main__":
