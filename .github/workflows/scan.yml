@@ -1,0 +1,51 @@
+name: Momentum scanner
+
+on:
+  schedule:
+    # Every 10 minutes, Mon-Fri, 13:00-20:59 UTC (covers US market hours all year).
+    # The script itself skips any run when the US market is closed.
+    - cron: "*/10 13-20 * * 1-5"
+  workflow_dispatch:   # lets you press "Run workflow" to test it any time
+
+permissions:
+  contents: write
+
+concurrency:
+  group: momentum-scanner
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Fix file names (spaces to underscores)
+        run: |
+          for f in *" "*; do [ -e "$f" ] && mv "$f" "${f// /_}"; done
+          ls -la
+
+      - name: Install
+        run: pip install -r requirements.txt
+
+      - name: Scan and send alerts
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          FORCE_RUN: ${{ github.event_name == 'workflow_dispatch' && '1' || '' }}
+        run: python scanner_alerts.py
+
+      - name: Remember today's alerts
+        if: always()
+        run: |
+          if [ -f alerted.json ]; then
+            git config user.name "scanner-bot"
+            git config user.email "scanner-bot@users.noreply.github.com"
+            git add alerted.json
+            git diff --cached --quiet || (git commit -m "Update alert history" && git push)
+          fi
