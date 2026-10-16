@@ -2,9 +2,11 @@ name: Momentum scanner
 
 on:
   schedule:
-    # Every 10 minutes, Mon-Fri, 13:00-20:59 UTC (covers US market hours all year).
-    # The script itself skips any run when the US market is closed.
-    - cron: "*/10 13-20 * * 1-5"
+    # Times are UTC. The script itself skips any run when the US market is closed.
+    # Every 10 min from 11:00-16:59 UTC: pre-market + the first hours of trading.
+    - cron: "*/10 11-16 * * 1-5"
+    # Every 20 min from 17:00-20:59 UTC: rest of the US session.
+    - cron: "*/20 17-20 * * 1-5"
   workflow_dispatch:   # lets you press "Run workflow" to test it any time
 
 permissions:
@@ -17,7 +19,7 @@ concurrency:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
