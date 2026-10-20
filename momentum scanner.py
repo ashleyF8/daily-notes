@@ -75,6 +75,7 @@ UTC = dt.timezone.utc
 REPORT_DIR = Path(__file__).resolve().parent / "scanner_reports"
 OTC_MARKERS = ("OTC", "PNK", "Pink", "Other OTC")
 FALLBACK_GBPUSD = 1.30
+LAST_STATS = {}
 SEC_USER_AGENT = os.environ.get("SEC_USER_AGENT", "momentum-scanner personal-use scanner@users.noreply.github.com")
 
 
@@ -372,8 +373,13 @@ def run_scan(require_news=True, mode=None, now=None):
         mode = "open"   # outside hours: show the last regular session
     fx = gbpusd()
     hits = []
+    stats = {"screened": 0, "price_move": 0, "volume": 0, "float": 0, "news": 0, "names": []}
+    LAST_STATS.clear()
+    LAST_STATS.update(stats)
 
     quotes = premarket_candidates() if mode == "premarket" else regular_candidates()
+    stats["screened"] = len(quotes)
+    stats["mode"] = mode
     for q in quotes:
         otc, exch = _is_otc(q)
         if otc:
@@ -382,26 +388,38 @@ def run_scan(require_news=True, mode=None, now=None):
         if not sym:
             continue
         avg = q.get("averageDailyVolume3Month") or q.get("averageDailyVolume10Day") or 0
+        if not avg:
+            stats["no_avg"] = stats.get("no_avg", 0) + 1
+            try:
+                avg = yf.Ticker(sym).fast_info["three_month_average_volume"] or 0
+            except Exception:
+                avg = 0
 
         if mode == "premarket":
             price = q.get("preMarketPrice") or 0
             change = q.get("preMarketChangePercent") or 0
             if not (MIN_PRICE <= price <= MAX_PRICE and change >= MIN_GAP_PCT):
                 continue
+            stats["price_move"] += 1
         else:
             price = q.get("regularMarketPrice") or 0
             change = q.get("regularMarketChangePercent") or 0
             if not (MIN_PRICE <= price <= MAX_PRICE and change >= MIN_GAIN_PCT):
                 continue
+            stats["price_move"] += 1
             vol = q.get("regularMarketVolume") or 0
             frac = expected_volume_fraction(minutes_since_open(now)) if session(now)[0] == "open" else 1.0
             rvol = vol / (avg * frac) if avg else 0
             if rvol < MIN_REL_VOLUME:
                 continue
+            stats["volume"] += 1
+            stats["names"].append(f"{sym} +{change:.0f}%")
 
         flt, is_float = float_shares(sym, q)
         if MAX_FLOAT and flt and flt > MAX_FLOAT:
             continue
+        if mode != "premarket":
+            stats["float"] += 1
 
         bars_all = intraday_bars(sym)
         bars = session_bars(bars_all, "premarket" if mode == "premarket" else "open")
@@ -409,6 +427,9 @@ def run_scan(require_news=True, mode=None, now=None):
             vol = sum(b["v"] for b in bars)
             if vol < MIN_PREMARKET_VOLUME:
                 continue
+            stats["volume"] += 1
+            stats["float"] += 1
+            stats["names"].append(f"{sym} +{change:.0f}%")
             rvol = vol / avg if avg else 0
             if bars:
                 price = bars[-1]["c"]
@@ -416,6 +437,7 @@ def run_scan(require_news=True, mode=None, now=None):
         news = recent_news(sym)
         if require_news and not news:
             continue
+        stats["news"] += 1
 
         hits.append({
             "symbol": sym, "name": q.get("shortName") or q.get("longName") or "",
@@ -426,7 +448,25 @@ def run_scan(require_news=True, mode=None, now=None):
             "plan": trade_plan(bars, price, fx), "fx": fx,
         })
     hits.sort(key=lambda h: h["change"], reverse=True)
+    LAST_STATS.update(stats)
     return mode, hits
+
+
+def funnel_text(stats=None):
+    s = stats or LAST_STATS
+    if not s:
+        return ""
+    move = f"up {MIN_GAP_PCT:g}%+ pre-market" if s.get("mode") == "premarket" else f"up {MIN_GAIN_PCT:g}%+"
+    lines = [f"Yahoo returned {s.get('screened', 0)} stocks",
+             f"{s.get('price_move', 0)} priced ${MIN_PRICE:g}-${MAX_PRICE:g} and {move}",
+             f"{s.get('volume', 0)} with enough volume",
+             f"{s.get('float', 0)} with float under {fmt_big(MAX_FLOAT) if MAX_FLOAT else 'any'}",
+             f"{s.get('news', 0)} with news (= alerts)"]
+    if s.get("no_avg"):
+        lines.append(f"({s['no_avg']} had no average-volume data from Yahoo)")
+    if s.get("names"):
+        lines.append("Near misses: " + ", ".join(s["names"][:6]))
+    return "\n".join(lines)
 
 
 # ---------------------------------------------------------------------------

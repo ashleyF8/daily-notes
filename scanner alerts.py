@@ -122,6 +122,7 @@ def main():
         sys.exit(1)
 
     print(f"[{mode}] {status} {len(hits)} match(es): {', '.join(h['symbol'] for h in hits) or 'none'}")
+    print(scanner.funnel_text())
 
     sent = 0
     for h in hits:
@@ -146,10 +147,25 @@ def main():
         sent += 1
         print(f"Alert sent: {h['symbol']} ({reason})")
 
+    # Daily check-ins so a quiet day is never a mystery:
+    #   ~9:00am New York (2pm UK) pre-market, and ~10:30am New York (3:30pm UK).
+    meta = stocks.setdefault("_meta", {})
+    now_ny = dt.datetime.now(scanner.NY)
+    slot = None
+    if sess == "premarket" and now_ny.time() >= dt.time(9, 0) and not meta.get("pm_summary"):
+        slot, meta["pm_summary"] = "Pre-market check", True
+    elif sess == "open" and now_ny.time() >= dt.time(10, 30) and not meta.get("open_summary"):
+        slot, meta["open_summary"] = "Market check", True
+    if slot and not force:
+        names = ", ".join(h["symbol"] for h in hits) or "none"
+        send_push(topic, f"{slot}: {len(hits)} match(es)",
+                  f"{status}\nMatches: {names}\n\n{scanner.funnel_text()}",
+                  priority=2, tags=["mag"])
+
     if force and not sent:
         names = ", ".join(h["symbol"] for h in hits) or "none right now"
         send_push(topic, "Scanner v2 is working",
-                  f"{status}\nMode: {mode}\nMatches: {names}\n"
+                  f"{status}\nMode: {mode}\nMatches: {names}\n\n{scanner.funnel_text()}\n\n"
                   f"Account GBP {scanner.ACCOUNT_GBP}, risk {scanner.RISK_PCT:g}% per trade.",
                   priority=3, tags=["white_check_mark"])
 
