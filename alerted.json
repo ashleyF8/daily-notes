@@ -4,6 +4,18 @@
     "_meta": {
       "pm_summary": true,
       "open_summary": true
+    },
+    "AHT": {
+      "count": 1,
+      "premarket": false,
+      "hod": 2.809999942779541,
+      "open_alerted": true
+    },
+    "SPHL": {
+      "count": 1,
+      "premarket": false,
+      "hod": 5.940000057220459,
+      "open_alerted": true
     }
   }
 }
