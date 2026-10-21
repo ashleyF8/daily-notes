@@ -2,7 +2,8 @@
   "date": "2026-10-21",
   "stocks": {
     "_meta": {
-      "pm_summary": true
+      "pm_summary": true,
+      "open_summary": true
     }
   }
 }
