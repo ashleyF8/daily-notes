@@ -4,9 +4,10 @@ on:
   schedule:
     # Times are UTC. The script itself skips any run when the US market is closed.
     # Every 10 min from 11:00-16:59 UTC: pre-market + the first hours of trading.
-    - cron: "*/10 11-16 * * 1-5"
+    # (Odd minutes on purpose: GitHub delays jobs scheduled on round minutes.)
+    - cron: "3-59/10 11-16 * * 1-5"
     # Every 20 min from 17:00-20:59 UTC: rest of the US session.
-    - cron: "*/20 17-20 * * 1-5"
+    - cron: "7-59/20 17-20 * * 1-5"
   workflow_dispatch:   # lets you press "Run workflow" to test it any time
 
 permissions:
