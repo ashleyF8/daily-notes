@@ -3,6 +3,12 @@
   "stocks": {
     "_meta": {
       "pm_summary": true
+    },
+    "BKYI": {
+      "count": 1,
+      "premarket": false,
+      "hod": 2.9899001121520996,
+      "open_alerted": true
     }
   }
 }
