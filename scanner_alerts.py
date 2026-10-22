@@ -30,11 +30,13 @@ MAX_ALERTS_PER_STOCK = 3
 REALERT_NEW_HIGH_PCT = 5.0   # re-alert if the high of day is this % above the last alert
 
 
-def send_push(topic, title, message, click=None, priority=4, tags=None):
+def send_push(topic, title, message, click=None, priority=4, tags=None, actions=None):
     payload = {"topic": topic, "title": title, "message": message,
                "priority": priority, "tags": tags or []}
     if click:
         payload["click"] = click
+    if actions:
+        payload["actions"] = actions
     req = urllib.request.Request(
         NTFY_SERVER, data=json.dumps(payload).encode("utf-8"),
         headers={"Content-Type": "application/json"}, method="POST")
@@ -133,7 +135,13 @@ def main():
         p = h["plan"]
         priority = 5 if p.get("ok") and not p.get("extended") and not h["dilution"] else 3
         send_push(topic, build_title(h, reason), build_message(h),
-                  click=f"https://finance.yahoo.com/quote/{h['symbol']}",
+                  click=scanner.tradingview_url(h["symbol"], h.get("exchange")),
+                  actions=[
+                      {"action": "view", "label": "Chart",
+                       "url": scanner.tradingview_url(h["symbol"], h.get("exchange"))},
+                      {"action": "view", "label": "News",
+                       "url": f"https://finance.yahoo.com/quote/{h['symbol']}/news"},
+                  ],
                   priority=priority,
                   tags=["warning"] if h["dilution"] else ["chart_with_upwards_trend"])
         record = record or {"count": 0, "premarket": False}

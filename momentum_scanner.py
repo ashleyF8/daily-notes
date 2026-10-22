@@ -395,6 +395,20 @@ def is_common_stock(q):
     return True
 
 
+def tradingview_url(symbol, exchange=""):
+    """Link that opens the chart in the TradingView app (or website)."""
+    ex = str(exchange or "").lower()
+    if "nasdaq" in ex:
+        prefix = "NASDAQ:"
+    elif "american" in ex or "arca" in ex or ex in ("ase", "pcx"):
+        prefix = "AMEX:"
+    elif "nyse" in ex or ex == "nyq":
+        prefix = "NYSE:"
+    else:
+        prefix = ""
+    return f"https://www.tradingview.com/chart/?symbol={prefix}{symbol}"
+
+
 def _is_otc(q):
     exch = str(q.get("fullExchangeName") or q.get("exchange") or "")
     return any(m in exch for m in OTC_MARKERS), exch
@@ -573,7 +587,7 @@ def write_report(mode, hits, status):
         dil = "".join(f'<div class="warn">&#9888; {e(d)}</div>' for d in h["dilution"])
         plan = "<br>".join(e(x) for x in plan_lines(h))
         cards.append(f"""<div class="card"><div class="top">
-<a class="sym" href="https://finance.yahoo.com/quote/{e(h['symbol'])}" target="_blank">{e(h['symbol'])}</a>
+<a class="sym" href="{e(tradingview_url(h['symbol'], h['exchange']))}" target="_blank">{e(h['symbol'])}</a>
 <span class="chg">+{h['change']:.1f}%</span></div>
 <div class="m">{e(h['name'])} &middot; {e(summary_line(h))}</div>{dil}
 <pre>{plan}</pre><ul>{news}</ul></div>""")
