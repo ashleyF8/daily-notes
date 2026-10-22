@@ -16,6 +16,12 @@
       "premarket": false,
       "hod": 2.5999999046325684,
       "open_alerted": true
+    },
+    "GIXI": {
+      "count": 1,
+      "premarket": false,
+      "hod": 4.5,
+      "open_alerted": true
     }
   }
 }
