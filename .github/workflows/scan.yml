@@ -1,28 +1,29 @@
-name: Momentum scanner
+name: daily
 
 on:
   schedule:
-    # Times are UTC. The script itself skips any run when the US market is closed.
-    # Every 10 min from 11:00-16:59 UTC: pre-market + the first hours of trading.
-    # (Odd minutes on purpose: GitHub delays jobs scheduled on round minutes.)
-    - cron: "3-59/10 11-16 * * 1-5"
-    # Every 20 min from 17:00-20:59 UTC: rest of the US session.
-    - cron: "7-59/20 17-20 * * 1-5"
-  workflow_dispatch:   # lets you press "Run workflow" to test it any time
+    # Times are UTC. A run starts each hour on weekdays; while one is already
+    # scanning, the next waits its turn and takes over when it finishes.
+    # Each run scans every 90 seconds until the US session ends (or ~5.5 hours).
+    - cron: "3 11-20 * * 1-5"
+  workflow_dispatch:   # "Run workflow" button = one quick test scan
 
 permissions:
   contents: write
 
 concurrency:
-  group: momentum-scanner
+  group: daily
   cancel-in-progress: false
 
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
+
+      - name: Get the latest alert history
+        run: git pull --ff-only || true
 
       - uses: actions/setup-python@v5
         with:
@@ -37,18 +38,25 @@ jobs:
       - name: Install
         run: pip install -r requirements.txt
 
-      - name: Scan and send alerts
+      - name: Scan
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          ACCOUNT_GBP: ${{ secrets.ACCOUNT_GBP }}
           FORCE_RUN: ${{ github.event_name == 'workflow_dispatch' && '1' || '' }}
+          LOOP_MINUTES: "330"
+          SCAN_EVERY_SECONDS: "90"
         run: python scanner_alerts.py
 
-      - name: Remember today's alerts
+      - name: Save alert history
         if: always()
         run: |
           if [ -f alerted.json ]; then
-            git config user.name "scanner-bot"
-            git config user.email "scanner-bot@users.noreply.github.com"
+            git config user.name "bot"
+            git config user.email "bot@users.noreply.github.com"
             git add alerted.json
-            git diff --cached --quiet || (git commit -m "Update alert history" && git push)
+            if ! git diff --cached --quiet; then
+              git commit -m "update"
+              git pull --rebase -X theirs || true
+              git push || true
+            fi
           fi
