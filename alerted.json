@@ -1,6 +1,14 @@
 {
   "date": "2026-10-23",
   "stocks": {
-    "_meta": {}
+    "_meta": {
+      "pm_summary": true
+    },
+    "BKYI": {
+      "count": 1,
+      "premarket": false,
+      "hod": 3.76990008354187,
+      "open_alerted": true
+    }
   }
 }
