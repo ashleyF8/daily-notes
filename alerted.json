@@ -2,7 +2,8 @@
   "date": "2026-10-23",
   "stocks": {
     "_meta": {
-      "pm_summary": true
+      "pm_summary": true,
+      "open_summary": true
     },
     "BKYI": {
       "count": 1,
@@ -17,9 +18,9 @@
       "open_alerted": true
     },
     "AIOK": {
-      "count": 1,
+      "count": 2,
       "premarket": false,
-      "hod": 6.880000114440918,
+      "hod": 10.15999984741211,
       "open_alerted": true
     }
   }
