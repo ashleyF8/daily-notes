@@ -1,27 +1,6 @@
 {
-  "date": "2026-10-22",
+  "date": "2026-10-23",
   "stocks": {
-    "_meta": {
-      "pm_summary": true,
-      "open_summary": true
-    },
-    "BKYI": {
-      "count": 2,
-      "premarket": false,
-      "hod": 3.1489999294281006,
-      "open_alerted": true
-    },
-    "SKYQ": {
-      "count": 1,
-      "premarket": false,
-      "hod": 2.5999999046325684,
-      "open_alerted": true
-    },
-    "GIXI": {
-      "count": 1,
-      "premarket": false,
-      "hod": 4.5,
-      "open_alerted": true
-    }
+    "_meta": {}
   }
 }
