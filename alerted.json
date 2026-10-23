@@ -9,6 +9,18 @@
       "premarket": false,
       "hod": 3.76990008354187,
       "open_alerted": true
+    },
+    "BOLT": {
+      "count": 1,
+      "premarket": false,
+      "hod": 7.78000020980835,
+      "open_alerted": true
+    },
+    "AIOK": {
+      "count": 1,
+      "premarket": false,
+      "hod": 6.880000114440918,
+      "open_alerted": true
     }
   }
 }
