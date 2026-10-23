@@ -48,14 +48,19 @@ except ImportError:
 # =============================================================================
 # YOUR SETTINGS - change these numbers to tune the scanner
 # =============================================================================
-ACCOUNT_GBP = 300          # money in your trading account for this strategy
-RISK_PCT = 1.0             # max % of the account you can lose on one trade
+ACCOUNT_GBP = float(os.environ.get("ACCOUNT_GBP") or 300)   # set as a GitHub secret
+RISK_PCT = float(os.environ.get("RISK_PCT") or 1.0)        # max % of account lost per trade
 
 MIN_PRICE = 2.0            # dollars
 MAX_PRICE = 20.0           # dollars
 MIN_GAIN_PCT = 10.0        # % up today (regular hours)
 MIN_GAP_PCT = 10.0         # % up in pre-market
 MIN_REL_VOLUME = 5.0       # time-adjusted relative volume
+
+# EARLY WARNING - a softer first ping so you're watching before the full signal
+EARLY_GAIN_PCT = 5.0       # % up today
+EARLY_GAP_PCT = 5.0        # % up pre-market
+EARLY_REL_VOLUME = 3.0     # time-adjusted relative volume
 MIN_PREMARKET_VOLUME = 100_000   # shares traded pre-market before we care
 MAX_FLOAT = 20_000_000     # shares; set to None to switch the float filter off
 NEWS_HOURS = 24            # how recent the catalyst must be
@@ -118,7 +123,25 @@ def expected_volume_fraction(minutes):
 # ---------------------------------------------------------------------------
 # Data helpers
 # ---------------------------------------------------------------------------
+_CACHE = {}
+
+
+def cached(key, ttl_seconds, fn):
+    """Remember slow lookups so a fast loop doesn't hammer Yahoo/SEC."""
+    now = time.time()
+    hit = _CACHE.get(key)
+    if hit and now - hit[0] < ttl_seconds:
+        return hit[1]
+    value = fn()
+    _CACHE[key] = (now, value)
+    return value
+
+
 def gbpusd():
+    return cached("gbpusd", 1800, _gbpusd)
+
+
+def _gbpusd():
     try:
         rate = yf.Ticker("GBPUSD=X").fast_info["last_price"]
         if rate and 1.0 < float(rate) < 2.0:
@@ -134,6 +157,10 @@ def float_shares(symbol, quote=None):
     for key in ("floatShares", "sharesOutstanding"):
         if quote.get(key):
             return quote[key], key == "floatShares"
+    return cached(("float", symbol), 6 * 3600, lambda: _float_lookup(symbol))
+
+
+def _float_lookup(symbol):
     try:
         info = yf.Ticker(symbol).get_info() or {}
         if info.get("floatShares"):
@@ -177,6 +204,10 @@ def _news_items(symbol):
 
 
 def recent_news(symbol, hours=NEWS_HOURS):
+    return cached(("news", symbol), 300, lambda: _recent_news(symbol, hours))
+
+
+def _recent_news(symbol, hours):
     items = _news_items(symbol)
     cutoff = dt.datetime.now(UTC) - dt.timedelta(hours=hours)
     out, seen = [], set()
@@ -253,6 +284,10 @@ def cik_for(symbol):
 
 def dilution_flags(symbol, today=None):
     """Return a list of warnings about recent share offerings / registrations."""
+    return cached(("sec", symbol), 6 * 3600, lambda: _dilution_flags(symbol, today))
+
+
+def _dilution_flags(symbol, today=None):
     today = today or dt.date.today()
     cik = cik_for(symbol)
     if not cik:
@@ -354,7 +389,7 @@ def _screen(query, sort_field, size=250, offset=0):
 def regular_candidates():
     query = EquityQuery("and", [
         EquityQuery("eq", ["region", "us"]),
-        EquityQuery("gt", ["percentchange", MIN_GAIN_PCT]),
+        EquityQuery("gt", ["percentchange", min(MIN_GAIN_PCT, EARLY_GAIN_PCT)]),
         EquityQuery("btwn", ["intradayprice", MIN_PRICE, MAX_PRICE]),
     ])
     return _screen(query, "percentchange")
@@ -439,27 +474,29 @@ def run_scan(require_news=True, mode=None, now=None):
         avg = q.get("averageDailyVolume3Month") or q.get("averageDailyVolume10Day") or 0
         if not avg:
             stats["no_avg"] = stats.get("no_avg", 0) + 1
-            try:
-                avg = yf.Ticker(sym).fast_info["three_month_average_volume"] or 0
-            except Exception:
-                avg = 0
+            def _avg(sym=sym):
+                try:
+                    return yf.Ticker(sym).fast_info["three_month_average_volume"] or 0
+                except Exception:
+                    return 0
+            avg = cached(("avg", sym), 6 * 3600, _avg)
 
         if mode == "premarket":
             price = q.get("preMarketPrice") or 0
             change = q.get("preMarketChangePercent") or 0
-            if not (MIN_PRICE <= price <= MAX_PRICE and change >= MIN_GAP_PCT):
+            if not (MIN_PRICE <= price <= MAX_PRICE and change >= min(MIN_GAP_PCT, EARLY_GAP_PCT)):
                 continue
             stats["price_move"] += 1
         else:
             price = q.get("regularMarketPrice") or 0
             change = q.get("regularMarketChangePercent") or 0
-            if not (MIN_PRICE <= price <= MAX_PRICE and change >= MIN_GAIN_PCT):
+            if not (MIN_PRICE <= price <= MAX_PRICE and change >= min(MIN_GAIN_PCT, EARLY_GAIN_PCT)):
                 continue
             stats["price_move"] += 1
             vol = q.get("regularMarketVolume") or 0
             frac = expected_volume_fraction(minutes_since_open(now)) if session(now)[0] == "open" else 1.0
             rvol = vol / (avg * frac) if avg else 0
-            if rvol < MIN_REL_VOLUME:
+            if rvol < min(MIN_REL_VOLUME, EARLY_REL_VOLUME):
                 continue
             stats["volume"] += 1
             stats["names"].append(f"{sym} +{change:.0f}%")
@@ -489,7 +526,14 @@ def run_scan(require_news=True, mode=None, now=None):
             continue
         stats["news"] += 1
 
+        if mode == "premarket":
+            full = change >= MIN_GAP_PCT
+        else:
+            full = change >= MIN_GAIN_PCT and rvol >= MIN_REL_VOLUME
+        stats["full" if full else "early"] = stats.get("full" if full else "early", 0) + 1
+
         hits.append({
+            "tier": "full" if full else "early",
             "symbol": sym, "name": q.get("shortName") or q.get("longName") or "",
             "exchange": exch, "mode": mode, "price": price, "change": change,
             "rvol": rvol, "volume": vol, "avg_volume": avg,
@@ -497,7 +541,7 @@ def run_scan(require_news=True, mode=None, now=None):
             "news": news, "dilution": dilution_flags(sym),
             "plan": trade_plan(bars, price, fx), "fx": fx,
         })
-    hits.sort(key=lambda h: h["change"], reverse=True)
+    hits.sort(key=lambda h: (h["tier"] != "full", -h["change"]))
     LAST_STATS.update(stats)
     return mode, hits
 
@@ -506,12 +550,13 @@ def funnel_text(stats=None):
     s = stats or LAST_STATS
     if not s:
         return ""
-    move = f"up {MIN_GAP_PCT:g}%+ pre-market" if s.get("mode") == "premarket" else f"up {MIN_GAIN_PCT:g}%+"
+    move = (f"up {min(MIN_GAP_PCT, EARLY_GAP_PCT):g}%+ pre-market" if s.get("mode") == "premarket"
+            else f"up {min(MIN_GAIN_PCT, EARLY_GAIN_PCT):g}%+")
     lines = [f"Yahoo returned {s.get('screened', 0)} stocks",
              f"{s.get('price_move', 0)} priced ${MIN_PRICE:g}-${MAX_PRICE:g} and {move}",
              f"{s.get('volume', 0)} with enough volume",
              f"{s.get('float', 0)} with float under {fmt_big(MAX_FLOAT) if MAX_FLOAT else 'any'}",
-             f"{s.get('news', 0)} with news (= alerts)"]
+             f"{s.get('news', 0)} with news: {s.get('full', 0)} full signal, {s.get('early', 0)} early warning"]
     if s.get("no_news"):
         lines.append("No news found for: " + ", ".join(s["no_news"][:6]))
     if s.get("news_errors"):

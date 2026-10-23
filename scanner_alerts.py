@@ -1,24 +1,29 @@
 #!/usr/bin/env python3
 """
-Runs the momentum scan and sends iPhone push notifications (ntfy app) with a
-full trade plan: entry, stop-loss, targets and position size.
+Runs the scan and sends iPhone push notifications (ntfy app) with a full
+trade plan: entry, stop-loss, targets and position size.
 
-* Pre-market (9am-2:30pm UK): alerts on stocks gapping up with news.
-* Market hours: alerts on new momentum stocks, and again (max 3 a day) if a
-  stock already alerted pushes to a new high.
+* EARLY: a softer first ping (up 5%+, 3x volume, news) so you start watching.
+* Full signal: your full rules, with entry / stop / targets / size.
+* NEW HIGH: re-alert (max 3 a day) when an alerted stock pushes higher.
 
-Runs on GitHub Actions. Remembers what it has sent today in alerted.json.
+Runs on GitHub Actions. With LOOP_MINUTES set it keeps scanning every
+SCAN_EVERY_SECONDS until the US session ends or the time budget runs out.
+Remembers what it has sent today in alerted.json.
 
 Environment variables:
-    NTFY_TOPIC   your private ntfy topic name (GitHub secret)
-    FORCE_RUN    "1" = run even when the market is closed and always send a
-                 status message (used by the manual "Run workflow" button)
+    NTFY_TOPIC          your private ntfy topic name (GitHub secret)
+    ACCOUNT_GBP         account size (GitHub secret, read by the scanner)
+    FORCE_RUN           "1" = single run even when closed, always sends a status
+    LOOP_MINUTES        keep scanning for up to this many minutes (0 = one scan)
+    SCAN_EVERY_SECONDS  pause between scans in loop mode (default 90)
 """
 
 import datetime as dt
 import json
 import os
 import sys
+import time
 import urllib.request
 from pathlib import Path
 
@@ -63,7 +68,11 @@ def save_state(today, stocks):
 
 def should_alert(h, record):
     """Returns (send?, reason)."""
-    if record is None:
+    if h.get("tier") == "early":
+        if record is None:
+            return True, "early"
+        return False, ""                 # early warning is sent once only
+    if record is None or not record.get("count"):
         return True, "new"
     if h["mode"] == "open" and record.get("premarket") and not record.get("open_alerted"):
         return True, "open"              # was a pre-market gapper, now trading live
@@ -89,7 +98,10 @@ def build_message(h):
 
 def build_title(h, reason):
     p = h["plan"]
-    prefix = {"new": "", "open": "OPEN: ", "newhigh": "NEW HIGH: "}.get(reason, "")
+    prefix = {"new": "", "open": "OPEN: ", "newhigh": "NEW HIGH: ",
+              "early": "EARLY: "}.get(reason, "")
+    if reason == "early":
+        return f"{prefix}{h['symbol']} +{h['change']:.0f}% - watch" + (" [DILUTION]" if h["dilution"] else "")
     if h["mode"] == "premarket":
         prefix = "PRE-MKT: " + prefix
     verdict = ""
@@ -101,16 +113,12 @@ def build_title(h, reason):
     return f"{prefix}{h['symbol']} +{h['change']:.0f}%{verdict}{warn}"
 
 
-def main():
-    topic = os.environ.get("NTFY_TOPIC", "").strip()
-    if not topic:
-        sys.exit("NTFY_TOPIC is not set. Add it as a GitHub secret (see README).")
-    force = os.environ.get("FORCE_RUN") == "1"
-
+def run_once(topic, force):
+    """One scan. Returns False if the market is closed (nothing done)."""
     sess, status = scanner.session()
     if sess == "closed" and not force:
         print(f"Skipping: {status}")
-        return
+        return False
 
     today = dt.datetime.now(scanner.NY).strftime("%Y-%m-%d")
     stocks = load_state(today)
@@ -121,7 +129,8 @@ def main():
         print(f"Scan failed: {exc}")
         if force:
             send_push(topic, "Scanner error", f"The scan failed: {exc}", priority=3, tags=["warning"])
-        sys.exit(1)
+            sys.exit(1)
+        return True          # in loop mode, try again next time
 
     print(f"[{mode}] {status} {len(hits)} match(es): {', '.join(h['symbol'] for h in hits) or 'none'}")
     print(scanner.funnel_text())
@@ -133,7 +142,10 @@ def main():
         if not ok:
             continue
         p = h["plan"]
-        priority = 5 if p.get("ok") and not p.get("extended") and not h["dilution"] else 3
+        if reason == "early":
+            priority = 3
+        else:
+            priority = 5 if p.get("ok") and not p.get("extended") and not h["dilution"] else 3
         send_push(topic, build_title(h, reason), build_message(h),
                   click=scanner.tradingview_url(h["symbol"], h.get("exchange")),
                   actions=[
@@ -145,6 +157,12 @@ def main():
                   priority=priority,
                   tags=["warning"] if h["dilution"] else ["chart_with_upwards_trend"])
         record = record or {"count": 0, "premarket": False}
+        if reason == "early":
+            record["early"] = True
+            stocks[h["symbol"]] = record
+            sent += 1
+            print(f"Alert sent: {h['symbol']} (early)")
+            continue
         record["count"] = record.get("count", 0) + 1
         record["hod"] = p.get("hod") or record.get("hod", 0)
         if h["mode"] == "premarket":
@@ -169,20 +187,44 @@ def main():
         slot = "Pre-market check" if sess == "premarket" else "Morning check"
         meta["pm_summary"] = True
     if slot and not force:
+        full = [h for h in hits if h.get("tier") == "full"]
         names = ", ".join(h["symbol"] for h in hits) or "none"
-        send_push(topic, f"{slot}: {len(hits)} match(es)",
+        send_push(topic, f"{slot}: {len(full)} signal(s), {len(hits) - len(full)} early",
                   f"{status}\nMatches: {names}\n\n{scanner.funnel_text()}",
                   priority=2, tags=["mag"])
 
     if force and not sent:
         names = ", ".join(h["symbol"] for h in hits) or "none right now"
-        send_push(topic, "Scanner v2 is working",
+        send_push(topic, "Scanner is working",
                   f"{status}\nMode: {mode}\nMatches: {names}\n\n{scanner.funnel_text()}\n\n"
                   f"Account GBP {scanner.ACCOUNT_GBP}, risk {scanner.RISK_PCT:g}% per trade.",
                   priority=3, tags=["white_check_mark"])
 
     if sess != "closed":
         save_state(today, stocks)
+    return True
+
+
+def main():
+    topic = os.environ.get("NTFY_TOPIC", "").strip()
+    if not topic:
+        sys.exit("NTFY_TOPIC is not set. Add it as a GitHub secret (see README).")
+    force = os.environ.get("FORCE_RUN") == "1"
+    loop_minutes = 0 if force else float(os.environ.get("LOOP_MINUTES") or 0)
+    every = max(30, float(os.environ.get("SCAN_EVERY_SECONDS") or 90))
+
+    deadline = time.time() + loop_minutes * 60
+    while True:
+        started = time.time()
+        still_open = run_once(topic, force)
+        if not loop_minutes or not still_open:
+            break
+        wait = every - (time.time() - started)
+        if time.time() + max(wait, 0) >= deadline:
+            print("Time budget used up - the next scheduled run takes over.")
+            break
+        if wait > 0:
+            time.sleep(wait)
 
 
 if __name__ == "__main__":
