@@ -39,6 +39,9 @@ import webbrowser
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+import warnings
+warnings.filterwarnings("ignore")   # hide noisy library warnings in the logs
+
 try:
     import yfinance as yf
     from yfinance import EquityQuery

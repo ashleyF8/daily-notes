@@ -132,7 +132,8 @@ def run_once(topic, force):
             sys.exit(1)
         return True          # in loop mode, try again next time
 
-    print(f"[{mode}] {status} {len(hits)} match(es): {', '.join(h['symbol'] for h in hits) or 'none'}")
+    stamp = dt.datetime.now(scanner.ZoneInfo("Europe/London")).strftime("%H:%M:%S UK")
+    print(f"{stamp} [{mode}] {status} {len(hits)} match(es): {', '.join(h['symbol'] for h in hits) or 'none'}")
     print(scanner.funnel_text())
 
     sent = 0
