@@ -1,2 +1,2 @@
-# momentum-scanner
-Stock momentum scanner with iPhone alerts
+# daily-notes
+Personal notes
