@@ -37,6 +37,12 @@
       "premarket": false,
       "hod": 2.069999933242798,
       "open_alerted": true
+    },
+    "CLRO": {
+      "count": 1,
+      "premarket": false,
+      "hod": 5.849999904632568,
+      "open_alerted": true
     }
   }
 }
