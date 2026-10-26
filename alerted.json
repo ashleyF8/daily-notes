@@ -1,26 +1,41 @@
 {
-  "date": "2026-10-23",
+  "date": "2026-10-26",
   "stocks": {
     "_meta": {
       "pm_summary": true,
       "open_summary": true
     },
-    "BKYI": {
-      "count": 1,
+    "SAIQ": {
+      "count": 2,
       "premarket": false,
-      "hod": 3.76990008354187,
+      "hod": 7.229899883270264,
       "open_alerted": true
     },
-    "BOLT": {
+    "MED": {
       "count": 1,
       "premarket": false,
-      "hod": 7.78000020980835,
+      "hod": 13.399999618530273,
       "open_alerted": true
     },
-    "AIOK": {
-      "count": 3,
+    "IDAI": {
+      "count": 0,
       "premarket": false,
-      "hod": 13.869999885559082,
+      "early": true
+    },
+    "XLO": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "EPOW": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "AZTR": {
+      "count": 1,
+      "premarket": false,
+      "hod": 2.069999933242798,
       "open_alerted": true
     }
   }
