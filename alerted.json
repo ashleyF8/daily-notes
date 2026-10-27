@@ -1,47 +1,47 @@
 {
-  "date": "2026-10-26",
+  "date": "2026-10-27",
   "stocks": {
     "_meta": {
       "pm_summary": true,
       "open_summary": true
     },
-    "SAIQ": {
-      "count": 2,
-      "premarket": false,
-      "hod": 7.229899883270264,
-      "open_alerted": true
-    },
-    "MED": {
-      "count": 1,
-      "premarket": false,
-      "hod": 13.399999618530273,
-      "open_alerted": true
-    },
-    "IDAI": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "XLO": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "EPOW": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "AZTR": {
-      "count": 1,
-      "premarket": false,
-      "hod": 2.069999933242798,
-      "open_alerted": true
-    },
     "CLRO": {
       "count": 1,
       "premarket": false,
-      "hod": 5.849999904632568,
+      "hod": 6.130000114440918,
+      "open_alerted": true
+    },
+    "SAIQ": {
+      "count": 1,
+      "premarket": false,
+      "hod": 7.719900131225586,
+      "open_alerted": true
+    },
+    "AEYE": {
+      "count": 3,
+      "premarket": false,
+      "hod": 9.51990032196045,
+      "open_alerted": true
+    },
+    "IPST": {
+      "count": 2,
+      "premarket": false,
+      "early": true,
+      "hod": 3.3798999786376953,
+      "open_alerted": true
+    },
+    "CPIX": {
+      "count": 1,
+      "premarket": false,
+      "early": true,
+      "hod": 4.800000190734863,
+      "open_alerted": true
+    },
+    "NUWE": {
+      "count": 3,
+      "premarket": false,
+      "early": true,
+      "hod": 5.75,
       "open_alerted": true
     }
   }
