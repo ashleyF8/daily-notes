@@ -31,10 +31,10 @@
       "open_alerted": true
     },
     "CPIX": {
-      "count": 1,
+      "count": 2,
       "premarket": false,
       "early": true,
-      "hod": 4.800000190734863,
+      "hod": 5.059999942779541,
       "open_alerted": true
     },
     "NUWE": {
@@ -43,6 +43,11 @@
       "early": true,
       "hod": 5.75,
       "open_alerted": true
+    },
+    "COCH": {
+      "count": 0,
+      "premarket": false,
+      "early": true
     }
   }
 }
