@@ -1,53 +1,59 @@
 {
-  "date": "2026-10-27",
+  "date": "2026-10-28",
   "stocks": {
     "_meta": {
       "pm_summary": true,
       "open_summary": true
     },
-    "CLRO": {
+    "ULBI": {
       "count": 1,
       "premarket": false,
-      "hod": 6.130000114440918,
+      "hod": 15.640000343322754,
       "open_alerted": true
     },
-    "SAIQ": {
+    "ELPW": {
       "count": 1,
       "premarket": false,
-      "hod": 7.719900131225586,
+      "hod": 3.440000057220459,
       "open_alerted": true
     },
-    "AEYE": {
-      "count": 3,
+    "BKYI": {
+      "count": 1,
       "premarket": false,
-      "hod": 9.51990032196045,
+      "hod": 3.25,
       "open_alerted": true
     },
-    "IPST": {
-      "count": 2,
-      "premarket": false,
-      "early": true,
-      "hod": 3.3798999786376953,
-      "open_alerted": true
-    },
-    "CPIX": {
-      "count": 2,
-      "premarket": false,
-      "early": true,
-      "hod": 5.059999942779541,
-      "open_alerted": true
-    },
-    "NUWE": {
-      "count": 3,
-      "premarket": false,
-      "early": true,
-      "hod": 5.75,
-      "open_alerted": true
-    },
-    "COCH": {
+    "DFLI": {
       "count": 0,
       "premarket": false,
       "early": true
+    },
+    "ITOC": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "IMMP": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "TP": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "AEYE": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "PDC": {
+      "count": 1,
+      "premarket": false,
+      "early": true,
+      "hod": 2.779900074005127,
+      "open_alerted": true
     }
   }
 }
