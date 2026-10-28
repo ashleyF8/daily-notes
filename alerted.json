@@ -49,10 +49,10 @@
       "early": true
     },
     "PDC": {
-      "count": 1,
+      "count": 3,
       "premarket": false,
       "early": true,
-      "hod": 2.779900074005127,
+      "hod": 3.069999933242798,
       "open_alerted": true
     }
   }
