@@ -1,59 +1,36 @@
 {
-  "date": "2026-10-28",
+  "date": "2026-10-29",
   "stocks": {
     "_meta": {
       "pm_summary": true,
       "open_summary": true
     },
-    "ULBI": {
+    "ADIL": {
       "count": 1,
       "premarket": false,
-      "hod": 15.640000343322754,
+      "hod": 0,
       "open_alerted": true
     },
-    "ELPW": {
-      "count": 1,
-      "premarket": false,
-      "hod": 3.440000057220459,
-      "open_alerted": true
-    },
-    "BKYI": {
-      "count": 1,
-      "premarket": false,
-      "hod": 3.25,
-      "open_alerted": true
-    },
-    "DFLI": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "ITOC": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "IMMP": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "TP": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "AEYE": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "PDC": {
+    "CETX": {
       "count": 3,
       "premarket": false,
-      "early": true,
-      "hod": 3.069999933242798,
+      "hod": 3.099900007247925,
       "open_alerted": true
+    },
+    "PCSA": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "WAVE": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "FINW": {
+      "count": 0,
+      "premarket": false,
+      "early": true
     }
   }
 }
