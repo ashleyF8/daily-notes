@@ -1,36 +1,33 @@
 {
-  "date": "2026-10-29",
+  "date": "2026-10-30",
   "stocks": {
     "_meta": {
       "pm_summary": true,
       "open_summary": true
     },
-    "ADIL": {
+    "TNMG": {
+      "count": 2,
+      "premarket": false,
+      "hod": 4.669899940490723,
+      "open_alerted": true
+    },
+    "WKHS": {
       "count": 1,
       "premarket": false,
-      "hod": 0,
+      "hod": 2.9700000286102295,
       "open_alerted": true
     },
-    "CETX": {
-      "count": 3,
+    "NCPL": {
+      "count": 0,
       "premarket": false,
-      "hod": 3.099900007247925,
+      "early": true
+    },
+    "NFE": {
+      "count": 1,
+      "premarket": false,
+      "early": true,
+      "hod": 4.739999771118164,
       "open_alerted": true
-    },
-    "PCSA": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "WAVE": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "FINW": {
-      "count": 0,
-      "premarket": false,
-      "early": true
     }
   }
 }
