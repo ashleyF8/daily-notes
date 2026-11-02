@@ -9,6 +9,23 @@
       "count": 0,
       "premarket": false,
       "early": true
+    },
+    "CLRO": {
+      "count": 1,
+      "premarket": false,
+      "hod": 7.400000095367432,
+      "open_alerted": true
+    },
+    "PTHS": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "SEGG": {
+      "count": 1,
+      "premarket": false,
+      "hod": 2.390000104904175,
+      "open_alerted": true
     }
   }
 }
