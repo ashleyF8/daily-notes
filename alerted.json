@@ -1,33 +1,14 @@
 {
-  "date": "2026-10-30",
+  "date": "2026-11-02",
   "stocks": {
     "_meta": {
       "pm_summary": true,
       "open_summary": true
     },
-    "TNMG": {
-      "count": 3,
-      "premarket": false,
-      "hod": 4.96999979019165,
-      "open_alerted": true
-    },
-    "WKHS": {
-      "count": 1,
-      "premarket": false,
-      "hod": 2.9700000286102295,
-      "open_alerted": true
-    },
-    "NCPL": {
+    "NVNO": {
       "count": 0,
       "premarket": false,
       "early": true
-    },
-    "NFE": {
-      "count": 1,
-      "premarket": false,
-      "early": true,
-      "hod": 4.739999771118164,
-      "open_alerted": true
     }
   }
 }
