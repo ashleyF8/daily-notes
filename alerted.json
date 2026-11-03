@@ -1,30 +1,58 @@
 {
-  "date": "2026-11-02",
+  "date": "2026-11-03",
   "stocks": {
     "_meta": {
       "pm_summary": true,
       "open_summary": true
     },
-    "NVNO": {
-      "count": 0,
+    "PARA": {
+      "count": 3,
       "premarket": false,
-      "early": true
-    },
-    "CLRO": {
-      "count": 1,
-      "premarket": false,
-      "hod": 7.400000095367432,
+      "hod": 6.45989990234375,
       "open_alerted": true
     },
-    "PTHS": {
+    "RDAC": {
+      "count": 1,
+      "premarket": false,
+      "hod": 11.1899995803833,
+      "open_alerted": true
+    },
+    "PMN": {
+      "count": 1,
+      "premarket": false,
+      "early": true,
+      "hod": 3.4000000953674316,
+      "open_alerted": true
+    },
+    "RMTI": {
       "count": 0,
       "premarket": false,
       "early": true
     },
+    "SQNS": {
+      "count": 2,
+      "premarket": false,
+      "early": true,
+      "hod": 2.9820001125335693,
+      "open_alerted": true
+    },
+    "NXXT": {
+      "count": 2,
+      "premarket": false,
+      "early": true,
+      "hod": 2.8299999237060547,
+      "open_alerted": true
+    },
     "SEGG": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "ICU": {
       "count": 1,
       "premarket": false,
-      "hod": 2.390000104904175,
+      "early": true,
+      "hod": 2.440000057220459,
       "open_alerted": true
     }
   }
