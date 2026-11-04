@@ -1,61 +1,51 @@
 {
-  "date": "2026-11-03",
+  "date": "2026-11-04",
   "stocks": {
     "_meta": {
       "pm_summary": true,
       "open_summary": true
     },
-    "PARA": {
+    "CPSH": {
+      "count": 1,
+      "premarket": false,
+      "hod": 4.070000171661377,
+      "open_alerted": true
+    },
+    "CHSN": {
+      "count": 2,
+      "premarket": false,
+      "hod": 4.420000076293945,
+      "open_alerted": true
+    },
+    "STEM": {
       "count": 3,
       "premarket": false,
-      "hod": 6.45989990234375,
-      "open_alerted": true
-    },
-    "RDAC": {
-      "count": 1,
-      "premarket": false,
-      "hod": 11.1899995803833,
-      "open_alerted": true
-    },
-    "PMN": {
-      "count": 2,
-      "premarket": false,
       "early": true,
-      "hod": 3.5999999046325684,
+      "hod": 2.9000000953674316,
       "open_alerted": true
     },
-    "RMTI": {
+    "SCOR": {
       "count": 0,
       "premarket": false,
       "early": true
     },
-    "SQNS": {
-      "count": 2,
-      "premarket": false,
-      "early": true,
-      "hod": 2.9820001125335693,
-      "open_alerted": true
-    },
-    "NXXT": {
-      "count": 2,
-      "premarket": false,
-      "early": true,
-      "hod": 2.8299999237060547,
-      "open_alerted": true
-    },
-    "SEGG": {
+    "MDCX": {
       "count": 0,
       "premarket": false,
       "early": true
     },
-    "ICU": {
+    "FTCI": {
       "count": 1,
       "premarket": false,
-      "early": true,
-      "hod": 2.440000057220459,
+      "hod": 2.2300000190734863,
       "open_alerted": true
     },
-    "OPAD": {
+    "CLIR": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "RYM": {
       "count": 0,
       "premarket": false,
       "early": true
