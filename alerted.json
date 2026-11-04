@@ -49,6 +49,12 @@
       "count": 0,
       "premarket": false,
       "early": true
+    },
+    "OMH": {
+      "count": 3,
+      "premarket": false,
+      "hod": 15.659899711608887,
+      "open_alerted": true
     }
   }
 }
