@@ -1,59 +1,48 @@
 {
-  "date": "2026-11-04",
+  "date": "2026-11-05",
   "stocks": {
     "_meta": {
       "pm_summary": true,
       "open_summary": true
     },
-    "CPSH": {
-      "count": 1,
+    "ELPW": {
+      "count": 3,
       "premarket": false,
-      "hod": 4.070000171661377,
+      "hod": 4.230000019073486,
       "open_alerted": true
     },
-    "CHSN": {
+    "ADIL": {
+      "count": 1,
+      "premarket": false,
+      "hod": 0,
+      "open_alerted": true
+    },
+    "LBTYB": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "ACNT": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "NXXT": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "ENHA": {
       "count": 2,
       "premarket": false,
-      "hod": 4.420000076293945,
-      "open_alerted": true
-    },
-    "STEM": {
-      "count": 3,
-      "premarket": false,
       "early": true,
-      "hod": 2.9000000953674316,
+      "hod": 8.488499641418457,
       "open_alerted": true
     },
-    "SCOR": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "MDCX": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "FTCI": {
+    "FLYE": {
       "count": 1,
       "premarket": false,
-      "hod": 2.2300000190734863,
-      "open_alerted": true
-    },
-    "CLIR": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "RYM": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "OMH": {
-      "count": 3,
-      "premarket": false,
-      "hod": 15.659899711608887,
+      "hod": 2.8499999046325684,
       "open_alerted": true
     }
   }
