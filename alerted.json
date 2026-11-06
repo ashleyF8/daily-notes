@@ -17,9 +17,11 @@
       "early": true
     },
     "STAK": {
-      "count": 0,
+      "count": 2,
       "premarket": false,
-      "early": true
+      "early": true,
+      "hod": 3.1700000762939453,
+      "open_alerted": true
     },
     "SCOR": {
       "count": 0,
@@ -41,10 +43,10 @@
       "open_alerted": true
     },
     "SKIN": {
-      "count": 2,
+      "count": 3,
       "premarket": false,
       "early": true,
-      "hod": 14.5600004196167,
+      "hod": 15.319999694824219,
       "open_alerted": true
     },
     "PSQH": {
