@@ -1,48 +1,57 @@
 {
-  "date": "2026-11-05",
+  "date": "2026-11-06",
   "stocks": {
     "_meta": {
       "pm_summary": true,
       "open_summary": true
     },
-    "ELPW": {
-      "count": 3,
+    "CIIT": {
+      "count": 2,
       "premarket": false,
-      "hod": 4.230000019073486,
+      "hod": 2.680000066757202,
       "open_alerted": true
     },
-    "ADIL": {
-      "count": 1,
-      "premarket": false,
-      "hod": 0,
-      "open_alerted": true
-    },
-    "LBTYB": {
+    "BGDE": {
       "count": 0,
       "premarket": false,
       "early": true
     },
-    "ACNT": {
+    "STAK": {
       "count": 0,
       "premarket": false,
       "early": true
     },
-    "NXXT": {
+    "SCOR": {
       "count": 0,
       "premarket": false,
       "early": true
     },
-    "ENHA": {
+    "INM": {
       "count": 2,
       "premarket": false,
       "early": true,
-      "hod": 8.488499641418457,
+      "hod": 16.440000534057617,
       "open_alerted": true
     },
-    "FLYE": {
+    "UEIC": {
+      "count": 2,
+      "premarket": false,
+      "early": true,
+      "hod": 5.809899806976318,
+      "open_alerted": true
+    },
+    "SKIN": {
+      "count": 2,
+      "premarket": false,
+      "early": true,
+      "hod": 14.5600004196167,
+      "open_alerted": true
+    },
+    "PSQH": {
       "count": 1,
       "premarket": false,
-      "hod": 2.8499999046325684,
+      "early": true,
+      "hod": 2.4000000953674316,
       "open_alerted": true
     }
   }
