@@ -57,11 +57,23 @@
       "early": true
     },
     "SMX": {
-      "count": 2,
+      "count": 3,
       "premarket": false,
       "early": true,
-      "hod": 6.344799995422363,
+      "hod": 6.800000190734863,
       "open_alerted": true
+    },
+    "BDSX": {
+      "count": 3,
+      "premarket": false,
+      "early": true,
+      "hod": 10.9399995803833,
+      "open_alerted": true
+    },
+    "JRSH": {
+      "count": 0,
+      "premarket": false,
+      "early": true
     }
   }
 }
