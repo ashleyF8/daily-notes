@@ -1,59 +1,66 @@
 {
-  "date": "2026-11-06",
+  "date": "2026-11-09",
   "stocks": {
     "_meta": {
       "pm_summary": true,
       "open_summary": true
     },
-    "CIIT": {
-      "count": 2,
-      "premarket": false,
-      "hod": 2.680000066757202,
-      "open_alerted": true
-    },
-    "BGDE": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "STAK": {
-      "count": 2,
-      "premarket": false,
-      "early": true,
-      "hod": 3.1700000762939453,
-      "open_alerted": true
-    },
-    "SCOR": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "INM": {
-      "count": 2,
-      "premarket": false,
-      "early": true,
-      "hod": 16.440000534057617,
-      "open_alerted": true
-    },
-    "UEIC": {
-      "count": 2,
-      "premarket": false,
-      "early": true,
-      "hod": 5.809899806976318,
-      "open_alerted": true
-    },
-    "SKIN": {
+    "CKX": {
       "count": 3,
       "premarket": false,
-      "early": true,
-      "hod": 15.319999694824219,
+      "hod": 19.31999969482422,
       "open_alerted": true
     },
-    "PSQH": {
+    "INM": {
+      "count": 1,
+      "premarket": false,
+      "hod": 0,
+      "open_alerted": true
+    },
+    "UG": {
+      "count": 2,
+      "premarket": false,
+      "hod": 8.399999618530273,
+      "open_alerted": true
+    },
+    "IMMP": {
       "count": 1,
       "premarket": false,
       "early": true,
-      "hod": 2.4000000953674316,
+      "hod": 3.7049999237060547,
+      "open_alerted": true
+    },
+    "SKIN": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "EDSA": {
+      "count": 1,
+      "premarket": false,
+      "hod": 3.9100000858306885,
+      "open_alerted": true
+    },
+    "SKYQ": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "ZDGE": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "QTI": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "SMX": {
+      "count": 2,
+      "premarket": false,
+      "early": true,
+      "hod": 6.344799995422363,
       "open_alerted": true
     }
   }
