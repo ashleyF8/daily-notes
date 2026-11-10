@@ -1,79 +1,110 @@
 {
-  "date": "2026-11-09",
+  "date": "2026-11-10",
   "stocks": {
     "_meta": {
       "pm_summary": true,
       "open_summary": true
     },
-    "CKX": {
+    "SMX": {
       "count": 3,
       "premarket": false,
-      "hod": 19.31999969482422,
+      "hod": 21.399999618530273,
       "open_alerted": true
     },
-    "INM": {
+    "EZRA": {
       "count": 1,
       "premarket": false,
       "hod": 0,
       "open_alerted": true
     },
-    "UG": {
-      "count": 2,
-      "premarket": false,
-      "hod": 8.399999618530273,
-      "open_alerted": true
-    },
-    "IMMP": {
+    "INBS": {
       "count": 1,
       "premarket": false,
-      "early": true,
-      "hod": 3.7049999237060547,
+      "hod": 2.2899999618530273,
       "open_alerted": true
-    },
-    "SKIN": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "EDSA": {
-      "count": 1,
-      "premarket": false,
-      "hod": 3.9100000858306885,
-      "open_alerted": true
-    },
-    "SKYQ": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "ZDGE": {
-      "count": 0,
-      "premarket": false,
-      "early": true
     },
     "QTI": {
+      "count": 1,
+      "premarket": false,
+      "hod": 2.3299999237060547,
+      "open_alerted": true
+    },
+    "VRCA": {
+      "count": 1,
+      "premarket": false,
+      "hod": 0,
+      "open_alerted": true
+    },
+    "NRDY": {
+      "count": 1,
+      "premarket": false,
+      "hod": 0,
+      "open_alerted": true
+    },
+    "PXLW": {
+      "count": 1,
+      "premarket": false,
+      "hod": 6.929999828338623,
+      "open_alerted": true
+    },
+    "TWG": {
+      "count": 2,
+      "premarket": false,
+      "early": true,
+      "hod": 3.9986000061035156,
+      "open_alerted": true
+    },
+    "EFOI": {
+      "count": 2,
+      "premarket": false,
+      "early": true,
+      "hod": 5.050000190734863,
+      "open_alerted": true
+    },
+    "SGC": {
       "count": 0,
       "premarket": false,
       "early": true
     },
-    "SMX": {
-      "count": 3,
+    "ATOS": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "APT": {
+      "count": 1,
       "premarket": false,
       "early": true,
-      "hod": 6.800000190734863,
+      "hod": 6.329999923706055,
       "open_alerted": true
     },
-    "BDSX": {
-      "count": 3,
+    "BODI": {
+      "count": 1,
       "premarket": false,
       "early": true,
-      "hod": 10.9399995803833,
+      "hod": 5.070000171661377,
       "open_alerted": true
+    },
+    "CKX": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "ACCS": {
+      "count": 0,
+      "premarket": false,
+      "early": true
     },
     "JRSH": {
       "count": 0,
       "premarket": false,
       "early": true
+    },
+    "AMIX": {
+      "count": 1,
+      "premarket": false,
+      "hod": 3.299999952316284,
+      "open_alerted": true
     }
   }
 }
