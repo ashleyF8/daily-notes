@@ -91,9 +91,9 @@
       "open_alerted": true
     },
     "NXXT": {
-      "count": 2,
+      "count": 3,
       "premarket": false,
-      "hod": 2.799999952316284,
+      "hod": 3.049999952316284,
       "open_alerted": true
     },
     "IMMP": {
@@ -102,9 +102,11 @@
       "early": true
     },
     "CPIX": {
-      "count": 0,
+      "count": 1,
       "premarket": false,
-      "early": true
+      "early": true,
+      "hod": 6.75,
+      "open_alerted": true
     }
   }
 }
