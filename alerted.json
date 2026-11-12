@@ -1,111 +1,114 @@
 {
-  "date": "2026-11-11",
+  "date": "2026-11-12",
   "stocks": {
     "_meta": {
       "pm_summary": true,
       "open_summary": true
     },
-    "SMX": {
+    "IDAI": {
       "count": 1,
       "premarket": false,
       "hod": 0,
       "open_alerted": true
     },
-    "PXLW": {
+    "YARW": {
       "count": 1,
       "premarket": false,
       "hod": 0,
       "open_alerted": true
     },
-    "TREO": {
+    "QUIK": {
       "count": 1,
       "premarket": false,
-      "hod": 0,
+      "hod": 8.989999771118164,
       "open_alerted": true
-    },
-    "DRIO": {
-      "count": 1,
-      "premarket": false,
-      "hod": 0,
-      "open_alerted": true
-    },
-    "TRIB": {
-      "count": 1,
-      "premarket": false,
-      "hod": 0,
-      "open_alerted": true
-    },
-    "APT": {
-      "count": 1,
-      "premarket": false,
-      "early": true,
-      "hod": 0,
-      "open_alerted": true
-    },
-    "GOSS": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "SNWV": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "STEM": {
-      "count": 0,
-      "premarket": false,
-      "early": true
     },
     "RDCM": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "TLF": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "BESS": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "CREX": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "OMH": {
       "count": 1,
       "premarket": false,
-      "hod": 32.749900817871094,
+      "hod": 11.0,
       "open_alerted": true
     },
-    "HBIO": {
+    "DFNS": {
+      "count": 1,
+      "premarket": false,
+      "hod": 2.069999933242798,
+      "open_alerted": true
+    },
+    "JXG": {
       "count": 1,
       "premarket": false,
       "early": true,
-      "hod": 10.149999618530273,
+      "hod": 13.970000267028809,
       "open_alerted": true
     },
-    "NXXT": {
+    "TRT": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "WSHP": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "ADXN": {
       "count": 3,
       "premarket": false,
-      "hod": 3.049999952316284,
+      "hod": 5.909900188446045,
       "open_alerted": true
     },
-    "IMMP": {
+    "MYPS": {
+      "count": 1,
+      "premarket": false,
+      "hod": 4.920000076293945,
+      "open_alerted": true
+    },
+    "JG": {
       "count": 0,
       "premarket": false,
       "early": true
     },
-    "CPIX": {
+    "NEPH": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "HCTI": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "DRIO": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "POAS": {
+      "count": 2,
+      "premarket": false,
+      "hod": 5.599999904632568,
+      "open_alerted": true
+    },
+    "USEA": {
+      "count": 3,
+      "premarket": false,
+      "early": true,
+      "hod": 3.039900064468384,
+      "open_alerted": true
+    },
+    "CREX": {
       "count": 1,
       "premarket": false,
       "early": true,
-      "hod": 6.75,
+      "hod": 2.309999942779541,
+      "open_alerted": true
+    },
+    "KROS": {
+      "count": 1,
+      "premarket": false,
+      "early": true,
+      "hod": 10.520000457763672,
       "open_alerted": true
     }
   }
