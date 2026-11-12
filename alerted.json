@@ -98,10 +98,10 @@
       "open_alerted": true
     },
     "CREX": {
-      "count": 1,
+      "count": 2,
       "premarket": false,
       "early": true,
-      "hod": 2.309999942779541,
+      "hod": 2.5,
       "open_alerted": true
     },
     "KROS": {
@@ -109,6 +109,18 @@
       "premarket": false,
       "early": true,
       "hod": 10.520000457763672,
+      "open_alerted": true
+    },
+    "STRR": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "DAIO": {
+      "count": 1,
+      "premarket": false,
+      "early": true,
+      "hod": 2.769200086593628,
       "open_alerted": true
     }
   }
