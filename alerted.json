@@ -1,126 +1,62 @@
 {
-  "date": "2026-11-12",
+  "date": "2026-11-13",
   "stocks": {
     "_meta": {
       "pm_summary": true,
       "open_summary": true
     },
-    "IDAI": {
+    "VTSI": {
+      "count": 3,
+      "premarket": false,
+      "hod": 3.9277000427246094,
+      "open_alerted": true
+    },
+    "EZRA": {
       "count": 1,
       "premarket": false,
       "hod": 0,
       "open_alerted": true
     },
-    "YARW": {
+    "LSF": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "SNAL": {
       "count": 1,
       "premarket": false,
-      "hod": 0,
+      "hod": 2.7797999382019043,
       "open_alerted": true
     },
-    "QUIK": {
+    "SMSI": {
       "count": 1,
       "premarket": false,
-      "hod": 8.989999771118164,
+      "hod": 2.6500000953674316,
       "open_alerted": true
     },
-    "RDCM": {
-      "count": 1,
-      "premarket": false,
-      "hod": 11.0,
-      "open_alerted": true
-    },
-    "DFNS": {
-      "count": 1,
-      "premarket": false,
-      "hod": 2.069999933242798,
-      "open_alerted": true
-    },
-    "JXG": {
+    "ARAI": {
       "count": 1,
       "premarket": false,
       "early": true,
-      "hod": 13.970000267028809,
+      "hod": 2.440000057220459,
       "open_alerted": true
     },
-    "TRT": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "WSHP": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "ADXN": {
-      "count": 3,
-      "premarket": false,
-      "hod": 5.909900188446045,
-      "open_alerted": true
-    },
-    "MYPS": {
-      "count": 1,
-      "premarket": false,
-      "hod": 4.920000076293945,
-      "open_alerted": true
-    },
-    "JG": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "NEPH": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "HCTI": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "DRIO": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "POAS": {
-      "count": 2,
-      "premarket": false,
-      "hod": 5.599999904632568,
-      "open_alerted": true
-    },
-    "USEA": {
-      "count": 3,
-      "premarket": false,
-      "early": true,
-      "hod": 3.039900064468384,
-      "open_alerted": true
-    },
-    "CREX": {
-      "count": 2,
-      "premarket": false,
-      "early": true,
-      "hod": 2.5,
-      "open_alerted": true
-    },
-    "KROS": {
+    "BUDA": {
       "count": 1,
       "premarket": false,
       "early": true,
-      "hod": 10.520000457763672,
+      "hod": 7.600100040435791,
       "open_alerted": true
     },
-    "STRR": {
+    "IZEA": {
       "count": 0,
       "premarket": false,
       "early": true
     },
-    "DAIO": {
+    "FCUV": {
       "count": 1,
       "premarket": false,
-      "early": true,
-      "hod": 2.769200086593628,
+      "hod": 7.909999847412109,
       "open_alerted": true
     }
   }
