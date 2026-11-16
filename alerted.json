@@ -1,62 +1,85 @@
 {
-  "date": "2026-11-13",
+  "date": "2026-11-16",
   "stocks": {
     "_meta": {
       "pm_summary": true,
       "open_summary": true
     },
-    "VTSI": {
-      "count": 3,
-      "premarket": false,
-      "hod": 3.9277000427246094,
-      "open_alerted": true
-    },
-    "EZRA": {
+    "FCUV": {
       "count": 1,
       "premarket": false,
       "hod": 0,
       "open_alerted": true
     },
-    "LSF": {
+    "VTSI": {
+      "count": 1,
+      "premarket": false,
+      "hod": 0,
+      "open_alerted": true
+    },
+    "UONEK": {
+      "count": 1,
+      "premarket": false,
+      "hod": 0,
+      "open_alerted": true
+    },
+    "WSHP": {
       "count": 0,
       "premarket": false,
       "early": true
     },
-    "SNAL": {
+    "CLW": {
       "count": 1,
       "premarket": false,
-      "hod": 2.7797999382019043,
+      "hod": 17.08060073852539,
       "open_alerted": true
     },
-    "SMSI": {
-      "count": 1,
-      "premarket": false,
-      "hod": 2.6500000953674316,
-      "open_alerted": true
-    },
-    "ARAI": {
-      "count": 1,
-      "premarket": false,
-      "early": true,
-      "hod": 2.440000057220459,
-      "open_alerted": true
-    },
-    "BUDA": {
-      "count": 1,
-      "premarket": false,
-      "early": true,
-      "hod": 7.600100040435791,
-      "open_alerted": true
-    },
-    "IZEA": {
+    "PXLW": {
       "count": 0,
       "premarket": false,
       "early": true
     },
-    "FCUV": {
+    "SPCB": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "GRDX": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "ELWT": {
       "count": 1,
       "premarket": false,
-      "hod": 7.909999847412109,
+      "early": true,
+      "hod": 3.7300000190734863,
+      "open_alerted": true
+    },
+    "GTBP": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "DFSC": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "DUKR": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "CNSP": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "AKAN": {
+      "count": 1,
+      "premarket": false,
+      "hod": 2.380000114440918,
       "open_alerted": true
     }
   }
