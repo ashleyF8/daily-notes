@@ -1,36 +1,13 @@
 {
-  "date": "2026-11-17",
+  "date": "2026-11-18",
   "stocks": {
-    "GP": {
+    "AKAN": {
       "count": 1,
       "premarket": false,
-      "hod": 3.390000104904175,
+      "hod": 4.559899806976318,
       "open_alerted": true
     },
-    "AYTU": {
-      "count": 1,
-      "premarket": false,
-      "hod": 2.6700000762939453,
-      "open_alerted": true
-    },
-    "TCX": {
-      "count": 1,
-      "premarket": false,
-      "hod": 15.65999984741211,
-      "open_alerted": true
-    },
-    "GLSI": {
-      "count": 1,
-      "premarket": false,
-      "hod": 19.28070068359375,
-      "open_alerted": true
-    },
-    "ONEW": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "CVU": {
+    "SPWR": {
       "count": 0,
       "premarket": false,
       "early": true
@@ -38,11 +15,6 @@
     "_meta": {
       "open_summary": true,
       "pm_summary": true
-    },
-    "NMAD": {
-      "count": 0,
-      "premarket": false,
-      "early": true
     }
   }
 }
