@@ -1,13 +1,7 @@
 {
-  "date": "2026-11-18",
+  "date": "2026-11-19",
   "stocks": {
-    "AKAN": {
-      "count": 1,
-      "premarket": false,
-      "hod": 4.559899806976318,
-      "open_alerted": true
-    },
-    "SPWR": {
+    "IMMP": {
       "count": 0,
       "premarket": false,
       "early": true
@@ -15,6 +9,17 @@
     "_meta": {
       "open_summary": true,
       "pm_summary": true
+    },
+    "JG": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
+    "SEAT": {
+      "count": 1,
+      "premarket": false,
+      "hod": 2.619999885559082,
+      "open_alerted": true
     }
   }
 }
