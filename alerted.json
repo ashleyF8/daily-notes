@@ -1,25 +1,15 @@
 {
-  "date": "2026-11-19",
+  "date": "2026-11-20",
   "stocks": {
-    "IMMP": {
-      "count": 0,
+    "AKAN": {
+      "count": 1,
       "premarket": false,
-      "early": true
+      "hod": 5.599999904632568,
+      "open_alerted": true
     },
     "_meta": {
       "open_summary": true,
       "pm_summary": true
-    },
-    "JG": {
-      "count": 0,
-      "premarket": false,
-      "early": true
-    },
-    "SEAT": {
-      "count": 1,
-      "premarket": false,
-      "hod": 2.619999885559082,
-      "open_alerted": true
     }
   }
 }
