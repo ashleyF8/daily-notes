@@ -1,10 +1,10 @@
 {
-  "date": "2026-11-20",
+  "date": "2026-11-25",
   "stocks": {
-    "AKAN": {
+    "BNAI": {
       "count": 1,
       "premarket": false,
-      "hod": 5.599999904632568,
+      "hod": 9.40999984741211,
       "open_alerted": true
     },
     "_meta": {
