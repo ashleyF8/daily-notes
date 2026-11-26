@@ -1,12 +1,6 @@
 {
-  "date": "2026-11-25",
+  "date": "2026-11-26",
   "stocks": {
-    "BNAI": {
-      "count": 1,
-      "premarket": false,
-      "hod": 9.40999984741211,
-      "open_alerted": true
-    },
     "_meta": {
       "open_summary": true,
       "pm_summary": true
