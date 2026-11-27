@@ -1,6 +1,17 @@
 {
-  "date": "2026-11-26",
+  "date": "2026-11-27",
   "stocks": {
+    "UFG": {
+      "count": 1,
+      "premarket": false,
+      "hod": 3.440000057220459,
+      "open_alerted": true
+    },
+    "NEPH": {
+      "count": 0,
+      "premarket": false,
+      "early": true
+    },
     "_meta": {
       "open_summary": true,
       "pm_summary": true
